@@ -13,7 +13,6 @@ import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [show, setShow] = useState(false);
   const [eye, setEye] = useState(false);
   const [loader, setLoader] = useState(true);
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
@@ -50,7 +49,6 @@ export const App: React.FC = () => {
                   currentTodo={currentTodo}
                   eye={eye}
                   setEye={setEye}
-                  setShow={setShow}
                   setCurrentTodo={setCurrentTodo}
                 />
               )}
@@ -59,11 +57,11 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {show && (
+      {currentTodo && (
         <TodoModal
           currentTodo={currentTodo}
           setEye={setEye}
-          setShow={setShow}
+          setCurrentTodo={setCurrentTodo}
         />
       )}
     </>

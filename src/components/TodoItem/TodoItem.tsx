@@ -5,7 +5,6 @@ interface Props {
   eye: boolean;
   currentTodo: Todo | null;
   setEye: (result: boolean) => void;
-  setShow: (result: boolean) => void;
   setCurrentTodo: (todo: Todo) => void;
 }
 
@@ -14,12 +13,10 @@ export const TodoItem: React.FC<Props> = ({
   eye,
   currentTodo,
   setEye,
-  setShow,
   setCurrentTodo,
 }) => {
-  const onHandleClick = () => {
+  const handleClick = () => {
     setEye(true);
-    setShow(true);
     setCurrentTodo(todo);
   };
 
@@ -45,7 +42,7 @@ export const TodoItem: React.FC<Props> = ({
           data-cy="selectButton"
           className="button"
           type="button"
-          onClick={onHandleClick}
+          onClick={handleClick}
         >
           <span className="icon">
             <i

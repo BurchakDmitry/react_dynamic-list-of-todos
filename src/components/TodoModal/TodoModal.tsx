@@ -7,13 +7,13 @@ import { Todo } from '../../types/Todo';
 interface Props {
   currentTodo: Todo | null;
   setEye: (result: boolean) => void;
-  setShow: (value: boolean) => void;
+  setCurrentTodo: (result: null) => void;
 }
 
 export const TodoModal: React.FC<Props> = ({
   currentTodo,
   setEye,
-  setShow,
+  setCurrentTodo,
 }) => {
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState<User | null>(null);
@@ -30,9 +30,9 @@ export const TodoModal: React.FC<Props> = ({
     })();
   }, []);
 
-  const onHandleClick = () => {
-    setShow(false);
+  const handleClose = () => {
     setEye(false);
+    setCurrentTodo(null);
   };
 
   return (
@@ -54,7 +54,7 @@ export const TodoModal: React.FC<Props> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={onHandleClick}
+              onClick={handleClose}
             />
           </header>
 

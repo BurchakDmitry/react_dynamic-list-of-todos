@@ -7,7 +7,6 @@ interface Props {
   currentTodo: Todo | null;
   eye: boolean;
   setEye: (result: boolean) => void;
-  setShow: (item: boolean) => void;
   setCurrentTodo: (todo: Todo) => void;
 }
 
@@ -16,7 +15,6 @@ export const TodoList: React.FC<Props> = ({
   eye,
   currentTodo,
   setEye,
-  setShow,
   setCurrentTodo,
 }) => (
   <table className="table is-narrow is-fullwidth">
@@ -39,7 +37,6 @@ export const TodoList: React.FC<Props> = ({
           currentTodo={currentTodo}
           eye={eye}
           setEye={setEye}
-          setShow={setShow}
           setCurrentTodo={setCurrentTodo}
           key={index + 1}
         />
