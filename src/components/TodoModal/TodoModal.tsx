@@ -5,23 +5,20 @@ import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
 
 interface Props {
-  currentTodo: Todo | null;
-  setEye: (result: boolean) => void;
+  currentTodo: Todo;
   setCurrentTodo: (result: null) => void;
 }
 
-export const TodoModal: React.FC<Props> = ({
-  currentTodo,
-  setEye,
-  setCurrentTodo,
-}) => {
+export const TodoModal: React.FC<Props> = ({ currentTodo, setCurrentTodo }) => {
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+
+  const { userId, completed, id } = currentTodo;
 
   useEffect(() => {
     (async () => {
       try {
-        const userFromApi = currentTodo && (await getUser(currentTodo.userId));
+        const userFromApi = currentTodo && (await getUser(userId));
 
         setUser(userFromApi);
       } finally {
@@ -31,7 +28,6 @@ export const TodoModal: React.FC<Props> = ({
   }, []);
 
   const handleClose = () => {
-    setEye(false);
     setCurrentTodo(null);
   };
 
@@ -48,7 +44,7 @@ export const TodoModal: React.FC<Props> = ({
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{currentTodo?.id}
+              Todo #{id}
             </div>
             <button
               type="button"
@@ -71,7 +67,7 @@ export const TodoModal: React.FC<Props> = ({
                     : 'has-text-danger'
                 }
               >
-                {currentTodo?.completed ? 'Done' : 'Planned'}
+                {completed ? 'Done' : 'Planned'}
               </strong>
 
               {' by '}

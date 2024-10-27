@@ -2,27 +2,24 @@ import { Todo } from '../../types/Todo';
 
 interface Props {
   todo: Todo;
-  eye: boolean;
   currentTodo: Todo | null;
-  setEye: (result: boolean) => void;
   setCurrentTodo: (todo: Todo) => void;
 }
 
 export const TodoItem: React.FC<Props> = ({
   todo,
-  eye,
   currentTodo,
-  setEye,
   setCurrentTodo,
 }) => {
   const handleClick = () => {
-    setEye(true);
     setCurrentTodo(todo);
   };
 
+  const { title, id, completed } = todo;
+
   return (
     <tr data-cy="todo" className="">
-      <td className="is-vcentered">{todo.id}</td>
+      <td className="is-vcentered">{id}</td>
       {todo.completed ? (
         <td className="is-vcentered">
           <span className="icon" data-cy="iconCompleted">
@@ -33,8 +30,8 @@ export const TodoItem: React.FC<Props> = ({
         <td className="is-vcentered" />
       )}
       <td className="is-vcentered is-expanded">
-        <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
-          {todo.title}
+        <p className={completed ? 'has-text-success' : 'has-text-danger'}>
+          {title}
         </p>
       </td>
       <td className="has-text-right is-vcentered">
@@ -46,7 +43,7 @@ export const TodoItem: React.FC<Props> = ({
         >
           <span className="icon">
             <i
-              className={`far ${currentTodo === todo && eye ? 'fa-eye-slash' : 'fa-eye'} `}
+              className={`far ${currentTodo?.id === id ? 'fa-eye-slash' : 'fa-eye'} `}
             />
           </span>
         </button>

@@ -5,16 +5,12 @@ import { Todo } from '../../types/Todo';
 interface Props {
   todos: Todo[];
   currentTodo: Todo | null;
-  eye: boolean;
-  setEye: (result: boolean) => void;
   setCurrentTodo: (todo: Todo) => void;
 }
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  eye,
   currentTodo,
-  setEye,
   setCurrentTodo,
 }) => (
   <table className="table is-narrow is-fullwidth">
@@ -31,14 +27,12 @@ export const TodoList: React.FC<Props> = ({
       </tr>
     </thead>
     <tbody>
-      {todos.map((todo, index) => (
+      {todos.map(todo => (
         <TodoItem
           todo={todo}
           currentTodo={currentTodo}
-          eye={eye}
-          setEye={setEye}
           setCurrentTodo={setCurrentTodo}
-          key={index + 1}
+          key={todo.id}
         />
       ))}
     </tbody>
