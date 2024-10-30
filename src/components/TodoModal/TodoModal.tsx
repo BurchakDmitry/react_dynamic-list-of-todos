@@ -3,6 +3,7 @@ import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
+import classNames from 'classnames';
 
 interface Props {
   currentTodo: Todo;
@@ -13,7 +14,7 @@ export const TodoModal: React.FC<Props> = ({ currentTodo, setCurrentTodo }) => {
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
-  const { userId, completed, id } = currentTodo;
+  const { userId, completed, id, title } = currentTodo;
 
   useEffect(() => {
     (async () => {
@@ -56,16 +57,15 @@ export const TodoModal: React.FC<Props> = ({ currentTodo, setCurrentTodo }) => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentTodo?.title}
+              {title}
             </p>
 
             <p className="block" data-cy="modal-user">
               <strong
-                className={
-                  currentTodo?.completed
-                    ? 'has-text-success'
-                    : 'has-text-danger'
-                }
+                className={classNames({
+                  'has-text-danger': !completed,
+                  'has-text-success': completed,
+                })}
               >
                 {completed ? 'Done' : 'Planned'}
               </strong>

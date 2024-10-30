@@ -54,7 +54,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {currentTodo && (
+      {currentTodo?.id && (
         <TodoModal currentTodo={currentTodo} setCurrentTodo={setCurrentTodo} />
       )}
     </>

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 
 interface Props {
@@ -20,7 +21,7 @@ export const TodoItem: React.FC<Props> = ({
   return (
     <tr data-cy="todo" className="">
       <td className="is-vcentered">{id}</td>
-      {todo.completed ? (
+      {completed ? (
         <td className="is-vcentered">
           <span className="icon" data-cy="iconCompleted">
             <i className="fas fa-check" />
@@ -30,7 +31,12 @@ export const TodoItem: React.FC<Props> = ({
         <td className="is-vcentered" />
       )}
       <td className="is-vcentered is-expanded">
-        <p className={completed ? 'has-text-success' : 'has-text-danger'}>
+        <p
+          className={classNames({
+            'has-text-danger': !completed,
+            'has-text-success': completed,
+          })}
+        >
           {title}
         </p>
       </td>
@@ -43,7 +49,10 @@ export const TodoItem: React.FC<Props> = ({
         >
           <span className="icon">
             <i
-              className={`far ${currentTodo?.id === id ? 'fa-eye-slash' : 'fa-eye'} `}
+              className={classNames('far', {
+                'fa-eye': currentTodo?.id !== id,
+                'fa-eye-slash': currentTodo?.id === id,
+              })}
             />
           </span>
         </button>

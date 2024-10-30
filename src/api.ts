@@ -32,7 +32,7 @@ export const getActive = () =>
 export const getCompleted = () =>
   getTodos().then(response => response.filter(todo => todo.completed));
 
-export const getFinded = (text: string) =>
+export const getFounded = (text: string) =>
   getTodos().then(response =>
     response.filter(todo =>
       todo.title.toLowerCase().includes(text.toLowerCase()),

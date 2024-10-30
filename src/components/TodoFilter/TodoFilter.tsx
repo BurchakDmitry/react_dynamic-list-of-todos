@@ -1,6 +1,7 @@
 import { Todo } from '../../types/Todo';
-import { getAll, getActive, getCompleted, getFinded } from '../../api';
+import { getAll, getActive, getCompleted, getFounded } from '../../api';
 import { useState, useEffect } from 'react';
+import { Option } from '../Option';
 
 interface Props {
   setTodos: (value: Todo[]) => void;
@@ -26,7 +27,7 @@ export const TodoFilter: React.FC<Props> = ({ setTodos }) => {
       let filteredTodos = await loadTodosByFilter();
 
       if (inputSearch.trim()) {
-        filteredTodos = await getFinded(inputSearch);
+        filteredTodos = await getFounded(inputSearch);
 
         if (filter === 'active') {
           filteredTodos = filteredTodos.filter(todo => !todo.completed);
@@ -64,9 +65,9 @@ export const TodoFilter: React.FC<Props> = ({ setTodos }) => {
             onChange={handleSelectChange}
             value={filter}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            {['All', 'Active', 'Completed'].map(item => (
+              <Option optionValue={item} key={item} />
+            ))}
           </select>
         </span>
       </p>
