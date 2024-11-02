@@ -24,19 +24,4 @@ function get<T>(url: string): Promise<T> {
 }
 
 export const getTodos = () => get<Todo[]>('/todos');
-
-export const getAll = () => getTodos().then(todos => todos);
-export const getActive = () =>
-  getTodos().then(response => response.filter(todo => !todo.completed));
-
-export const getCompleted = () =>
-  getTodos().then(response => response.filter(todo => todo.completed));
-
-export const getFounded = (text: string) =>
-  getTodos().then(response =>
-    response.filter(todo =>
-      todo.title.toLowerCase().includes(text.toLowerCase()),
-    ),
-  );
-
 export const getUser = (userId: number) => get<User>(`/users/${userId}`);

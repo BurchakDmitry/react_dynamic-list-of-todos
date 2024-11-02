@@ -8,25 +8,19 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
-import { getTodos } from './api';
+// import { getTodos } from './api';
 import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [loader, setLoader] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const todosFromApi = await getTodos();
-
-        setTodos(todosFromApi);
-      } finally {
-        setLoader(false);
-      }
-    })();
-  }, []);
+    if (todos.length > 0) {
+      setLoading(false);
+    }
+  }, [todos]);
 
   return (
     <>
@@ -40,7 +34,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loader ? (
+              {loading ? (
                 <Loader />
               ) : (
                 <TodoList
@@ -54,7 +48,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {currentTodo?.id && (
+      {currentTodo && (
         <TodoModal currentTodo={currentTodo} setCurrentTodo={setCurrentTodo} />
       )}
     </>

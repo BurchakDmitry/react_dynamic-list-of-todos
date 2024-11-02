@@ -1,46 +1,47 @@
 import { Todo } from '../../types/Todo';
-import { getAll, getActive, getCompleted, getFounded } from '../../api';
 import { useState, useEffect } from 'react';
 import { Option } from '../Option';
+import { getTodos } from '../../api';
 
 interface Props {
   setTodos: (value: Todo[]) => void;
 }
 
-export const TodoFilter: React.FC<Props> = ({ setTodos }) => {
-  const [inputSearch, setInputSearch] = useState('');
-  const [close, setClose] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+type FilterType = 'all' | 'active' | 'completed';
 
-  const loadTodosByFilter = async () => {
-    if (filter === 'active') {
-      return getActive();
-    } else if (filter === 'completed') {
-      return getCompleted();
-    } else {
-      return getAll();
-    }
-  };
+export const TodoFilter: React.FC<Props> = ({ setTodos }) => {
+  const [inputSearch, setInputSearch] = useState<string>('');
+  const [close, setClose] = useState<boolean>(false);
+  const [filter, setFilter] = useState<FilterType>('all');
+  const [allTodos, setAllTodos] = useState<Todo[]>();
 
   useEffect(() => {
-    const applyFilterAndSearch = async () => {
-      let filteredTodos = await loadTodosByFilter();
+    if (!allTodos) {
+      getTodos().then(setAllTodos);
+    }
+  }, [allTodos]);
 
-      if (inputSearch.trim()) {
-        filteredTodos = await getFounded(inputSearch);
+  useEffect(() => {
+    if (allTodos) {
+      let newTodos = [...allTodos];
 
-        if (filter === 'active') {
-          filteredTodos = filteredTodos.filter(todo => !todo.completed);
-        } else if (filter === 'completed') {
-          filteredTodos = filteredTodos.filter(todo => todo.completed);
-        }
+      if (filter === 'active') {
+        newTodos = allTodos?.filter(todo => !todo.completed);
+      } else if (filter === 'completed') {
+        newTodos = allTodos?.filter(todo => todo.completed);
+      } else {
+        newTodos = allTodos;
       }
 
-      setTodos(filteredTodos);
-    };
+      if (inputSearch.trim()) {
+        newTodos = newTodos.filter(todo =>
+          todo.title.toLowerCase().includes(inputSearch.toLowerCase()),
+        );
+      }
 
-    applyFilterAndSearch();
-  }, [filter, inputSearch, setTodos]);
+      setTodos(newTodos);
+    }
+  }, [inputSearch, allTodos, filter, setTodos]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(event.target.value);
@@ -53,7 +54,7 @@ export const TodoFilter: React.FC<Props> = ({ setTodos }) => {
   };
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter(event.target.value as 'all' | 'active' | 'completed');
+    setFilter(event.target.value as FilterType);
   };
 
   return (
