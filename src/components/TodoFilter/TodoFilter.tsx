@@ -1,25 +1,18 @@
 import { Todo } from '../../types/Todo';
 import { useState, useEffect } from 'react';
 import { Option } from '../Option';
-import { getTodos } from '../../api';
 
 interface Props {
+  allTodos?: Todo[];
   setTodos: (value: Todo[]) => void;
 }
 
 type FilterType = 'all' | 'active' | 'completed';
 
-export const TodoFilter: React.FC<Props> = ({ setTodos }) => {
+export const TodoFilter: React.FC<Props> = ({ allTodos, setTodos }) => {
   const [inputSearch, setInputSearch] = useState<string>('');
-  const [close, setClose] = useState<boolean>(false);
+  const [close, setClose] = useState(false);
   const [filter, setFilter] = useState<FilterType>('all');
-  const [allTodos, setAllTodos] = useState<Todo[]>();
-
-  useEffect(() => {
-    if (!allTodos) {
-      getTodos().then(setAllTodos);
-    }
-  }, [allTodos]);
 
   useEffect(() => {
     if (allTodos) {
